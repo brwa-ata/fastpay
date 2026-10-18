@@ -1,0 +1,58 @@
+[project]
+name = "fastpay"
+version = "0.1.0"
+description = "FastPay payment gateway for Django: wallet payments on FastPay's page or app that complete a receipt once FastPay confirms them."
+readme = "README.md"
+authors = [
+    { name = "Brwa Atta", email = "brwa.ata.hamalaw@gmail.com" }
+]
+requires-python = ">=3.10"
+keywords = ["fastpay", "payment", "gateway", "wallet", "qr", "django", "iraq"]
+classifiers = [
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Framework :: Django :: 5.2",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "django>=4.2",
+    "djangorestframework>=3.14",
+    "requests>=2.28",
+]
+
+[project.urls]
+Homepage = "https://github.com/brwa-ata/fastpay"
+Repository = "https://github.com/brwa-ata/fastpay"
+Changelog = "https://github.com/brwa-ata/fastpay/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = ["uv_build>=0.13.0,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-django>=4.9",
+    "ruff>=0.15",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+# README examples are laid out by hand; formatting them would mangle them
+extend-exclude = ["*.md"]
+
+[tool.ruff.lint]
+# DRF declares permission_classes / authentication_classes as class-level
+# lists; that is the framework's own idiom, not shared mutable state
+ignore = ["RUF012"]
+
+[tool.ruff.format]
+quote-style = "single"

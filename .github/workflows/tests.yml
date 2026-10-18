@@ -1,0 +1,37 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  test:
+    name: Python ${{ matrix.python }} (${{ matrix.resolution }} deps)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # the oldest versions pyproject.toml promises to support
+          - python: '3.10'
+            resolution: lowest-direct
+          # and the newest ones a project may upgrade to
+          - python: '3.13'
+            resolution: highest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Tests
+        run: >
+          uv run --isolated --python ${{ matrix.python }}
+          --resolution ${{ matrix.resolution }} pytest -q
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
